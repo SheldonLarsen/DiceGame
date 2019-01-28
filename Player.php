@@ -41,14 +41,6 @@ class Player
     /**
      * @param mixed $roundScore
      */
-    public function setRoundScore($roundScore)
-    {
-        $this->roundScore = $roundScore;
-    }
-
-    /**
-     * @param mixed $roundScore
-     */
     public function addToRoundScore($roundScore)
     {
         $this->roundScore += $roundScore;

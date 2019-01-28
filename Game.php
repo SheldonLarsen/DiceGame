@@ -23,7 +23,6 @@ class Game
     public function playGame()
     {
         $this->setup();
-
         //Loop for the Number of Rounds
         for ($round = 1; $round <= $this->rounds; $round++) {
             echo "\nRound {$round}\n";
@@ -36,16 +35,13 @@ class Game
                 //Loop until all dice have been selected
                 $selectedDice = 0;
                 do {
-                    echo "Rolling...\n";
                     $roll = $this->rollDice($this->dice - $selectedDice);
                     $selected = $this->chooseDice($roll, $player);
-                    $this->printSelectedDice($selected);
                     $selectedDice += count($selected);
                 } while ($selectedDice < $this->dice);
             }
             $this->resetRound();
         }
-
         $this->totalScores();
     }
 
@@ -70,6 +66,7 @@ class Game
      */
     private function rollDice($numberToRoll)
     {
+        echo "Rolling...\n";
         $dice = [];
         for ($rolled = 0; $rolled < $numberToRoll; $rolled++) {
             $roll = rand(1, 6);
@@ -117,14 +114,16 @@ class Game
     private function chooseDice($dice, $player)
     {
         $selected = array_keys($dice, 4);
-        if (!empty($selected)) {
-            return $selected;
-        } else {
+
+        //If no fours are found select the lowest
+        if (empty($selected)) {
             $value = min($dice);
             $player->addToRoundScore($value);
-            return array(array_search($value, $dice));
+            $selected = array(array_search($value, $dice));
         }
 
+        $this->printSelectedDice($selected);
+        return $selected;
     }
 
     /**
